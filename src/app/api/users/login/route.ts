@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ message: "invalid email" });
+      return NextResponse.json({ error: "invalid email" });
     }
 
     //check password
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return NextResponse.json({ message: "invalid password" });
+      return NextResponse.json({ error: "invalid password" });
     }
 
     const tokenData = {
@@ -48,8 +48,12 @@ export async function POST(request: NextRequest) {
     response.cookies.set("token", token, {
       httpOnly: true,
     });
+
     return response;
   } catch (error) {
-    return NextResponse.json({ message: "failed to login try again", error });
+    return NextResponse.json({
+      error: "failed to login try again",
+      carchError: error,
+    });
   }
 }

@@ -1,6 +1,8 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -11,10 +13,16 @@ const Login = () => {
     password: "",
   });
   const onSubmit = async () => {
+    if (user.email === "" || user.password === "") {
+      return;
+    }
     const response = await axios.post("/api/users/login", {
       body: user,
     });
     console.log(response);
+    if (response.data.error) {
+      return;
+    }
     redirect.push("/profile");
   };
   return (
@@ -46,7 +54,12 @@ const Login = () => {
               }
             />
           </div>
-          <button onClick={onSubmit}>Login</button>
+          <Button onClick={onSubmit} className="flex mt-3 ml-auto">
+            Login
+          </Button>
+          <Button asChild variant="link" className="text-center block">
+            <Link href="/signup">Sign Up</Link>
+          </Button>
         </CardContent>
       </Card>
     </div>
