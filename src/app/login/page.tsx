@@ -1,14 +1,21 @@
 "use client";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Login = () => {
+  const redirect = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-  const onSubmit = () => {
-    console.log(user);
+  const onSubmit = async () => {
+    const response = await axios.post("/api/users/login", {
+      body: user,
+    });
+    console.log(response);
+    redirect.push("/profile");
   };
   return (
     <div className="flex items-center justify-center min-h-screen">
