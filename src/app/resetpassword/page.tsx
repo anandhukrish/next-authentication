@@ -2,18 +2,25 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import axios, { AxiosError } from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-  const [password, setPassword] = useState("");
   const redirect = useRouter();
 
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token") || "";
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const urlToken = window.location.href.split("=")[1];
+    setToken(urlToken);
+  }, []);
 
   const resetPassword = async () => {
+    if (token.length <= 0) {
+      return;
+    }
     try {
       const response = await axios.post("/api/resetpassword", {
         password,

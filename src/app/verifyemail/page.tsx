@@ -2,21 +2,23 @@
 import { Button } from "@/components/ui/button";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const VerifyUser = () => {
-  const query = useSearchParams();
   const [userVerified, setUserVerified] = useState(false);
+  const [token, setToken] = useState("");
 
-  const tokenFromUrl = query.get("token")!;
+  useEffect(() => {
+    const urlToken = window.location.href.split("=")[1];
+    setToken(urlToken);
+  }, []);
 
   useEffect(() => {
     async function verifyToken() {
       try {
         await axios.post("/api/verifyemail", {
-          body: tokenFromUrl,
+          body: token,
         });
         setUserVerified(true);
         toast.success("email verified successfully");
@@ -27,8 +29,10 @@ const VerifyUser = () => {
           });
       }
     }
-    verifyToken();
-  }, [tokenFromUrl]);
+    if (token.length > 0) {
+      verifyToken();
+    }
+  }, [token]);
 
   return (
     <div className="flex items-center justify-center flex-col min-h-screen">

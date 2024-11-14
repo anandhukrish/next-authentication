@@ -24,7 +24,7 @@ const ForgotPassword = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-1/3 p-5">
-        <CardTitle className="mb-3">Forgot Title</CardTitle>
+        <CardTitle className="mb-3">Forgot Password</CardTitle>
         <CardContent>
           <div className="mb-3">
             <input
