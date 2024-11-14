@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
