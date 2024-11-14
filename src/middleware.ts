@@ -23,6 +23,7 @@ export function middleware(request: NextRequest) {
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+  return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more

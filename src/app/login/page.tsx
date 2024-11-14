@@ -24,7 +24,7 @@ const Login = () => {
     if (response.data.error) {
       return;
     }
-    redirect.push("/profile");
+    redirect.push("/");
   };
   return (
     <div className="flex items-center justify-center min-h-screen">
