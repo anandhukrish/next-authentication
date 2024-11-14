@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const router = useRouter();
@@ -18,15 +19,21 @@ const SignUp = () => {
     if (user.email === "" || user.password === "" || user.username === "") {
       return;
     }
-    const response = await axios.post("/api/users/signup", {
-      body: user,
-    });
-    console.log(response);
-    if (response.data.error) {
-      return;
-    }
+    try {
+      await axios.post("/api/users/signup", {
+        body: user,
+      });
 
-    router.push("/login");
+      toast.success("user created please check your mail for varification", {
+        duration: 3000,
+      });
+      router.push("/login");
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.error, {
+          duration: 3000,
+        });
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen">

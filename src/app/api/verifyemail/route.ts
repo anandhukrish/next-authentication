@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
       verifyTokenExpiry: { $gte: Date.now() },
     });
 
-    if (!user) return NextResponse.json({ error: "token expired" });
+    if (!user)
+      return NextResponse.json({ error: "token expired" }, { status: 500 });
 
     user.isVerified = true;
     user.verifyToken = undefined;

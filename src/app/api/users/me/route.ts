@@ -7,6 +7,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ userId });
   } catch (error) {
     if (error instanceof Error)
-      return NextResponse.json({ error: error.message });
+      return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

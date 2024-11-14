@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const redirect = useRouter();
@@ -17,14 +18,21 @@ const Login = () => {
     if (user.email === "" || user.password === "") {
       return;
     }
-    const response = await axios.post("/api/users/login", {
-      body: user,
-    });
-    console.log(response);
-    if (response.data.error) {
-      return;
+    try {
+      await axios.post("/api/users/login", {
+        body: user,
+      });
+      toast.success("login successfull", {
+        duration: 3000,
+      });
+
+      redirect.push("/");
+    } catch (error) {
+      if (error instanceof AxiosError)
+        toast.error(error.response?.data.error, {
+          duration: 3000,
+        });
     }
-    redirect.push("/");
   };
   return (
     <div className="flex items-center justify-center min-h-screen">

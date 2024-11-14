@@ -1,17 +1,24 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
   const checkEmail = async () => {
-    const response = await axios.post("/api/forgotpassword", {
-      email,
-    });
-    console.log(response);
+    try {
+      await axios.post("/api/forgotpassword", {
+        email,
+      });
+      toast.success("password reset email send to your mail");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.error);
+      }
+    }
   };
 
   return (

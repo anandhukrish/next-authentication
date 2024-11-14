@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ error: "invalid email" });
+      return NextResponse.json({ error: "invalid email" }, { status: 500 });
     }
 
     //check password
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const isPasswordCorrect = await bcryptjs.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return NextResponse.json({ error: "invalid password" });
+      return NextResponse.json({ error: "invalid password" }, { status: 500 });
     }
 
     const tokenData = {
@@ -50,10 +50,12 @@ export async function POST(request: NextRequest) {
     });
 
     return response;
-  } catch (error) {
-    return NextResponse.json({
-      error: "failed to login try again",
-      carchError: error,
-    });
+  } catch {
+    return NextResponse.json(
+      {
+        error: "failed to login try again",
+      },
+      { status: 500 }
+    );
   }
 }
