@@ -12,6 +12,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+
   const onSubmit = async () => {
     if (user.email === "" || user.password === "") {
       return;
@@ -59,6 +60,9 @@ const Login = () => {
           </Button>
           <Button asChild variant="link" className="text-center block">
             <Link href="/signup">Sign Up</Link>
+          </Button>
+          <Button asChild variant="link" className="text-center block">
+            <Link href="/forgotpassword">Forget Password</Link>
           </Button>
         </CardContent>
       </Card>
